@@ -4,7 +4,7 @@ import autogen
 
 class ModelConfig:
     """模型配置"""
-    API_KEY = "sk-921cd3ca27944d239b701b93554d6433"
+    API_KEY = "your api key 默认使用deepseek-chat" 
     BASE_URL = "https://api.deepseek.com/v1"
     
     # 配置模型参数
