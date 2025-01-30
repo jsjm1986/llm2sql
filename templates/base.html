@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能数据库助手</title>
+    <!-- 引入Element Plus -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% raw %}
+    <div id="app">
+        <el-container>
+            <el-header>
+                <h1>智能数据库助手</h1>
+            </el-header>
+            <el-main>
+                {% endraw %}
+                {% block content %}{% endblock %}
+                {% raw %}
+            </el-main>
+            <el-footer>
+                <p>&copy; 2024 智能数据库助手</p>
+            </el-footer>
+        </el-container>
+    </div>
+    {% endraw %}
+
+    <!-- Vue 3 -->
+    <script src="//cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <!-- Element Plus -->
+    <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
+    <!-- Element Plus 图标 -->
+    <script src="//cdn.jsdelivr.net/npm/@element-plus/icons-vue"></script>
+    <!-- Element Plus 语言包 -->
+    <script src="//cdn.jsdelivr.net/npm/element-plus/dist/locale/zh-cn.min.js"></script>
+    <!-- Axios -->
+    <script src="//cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- 自定义脚本 -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,195 @@
+/* 全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+/* 容器样式 */
+.el-container {
+    min-height: 100vh;
+}
+
+/* 头部样式 */
+.el-header {
+    background-color: #409EFF;
+    color: white;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
+}
+
+.el-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* 主要内容区域样式 */
+.el-main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 表单样式 */
+.el-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* 查询结果样式 */
+.query-result {
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+}
+
+/* 执行日志样式 */
+.execution-log {
+    margin: 20px 0;
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+}
+
+.execution-log h3 {
+    margin-top: 0;
+    color: #606266;
+    font-size: 16px;
+}
+
+.sql-code {
+    margin: 10px 0;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 4px solid #409EFF;
+}
+
+.sql-code pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.sql-code code {
+    color: #476582;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+}
+
+/* Agents对话样式 */
+.chat-messages {
+    margin: 15px 0;
+    border: 1px solid #EBEEF5;
+    border-radius: 4px;
+}
+
+.chat-message {
+    padding: 12px;
+    border-bottom: 1px solid #EBEEF5;
+    transition: background-color 0.3s;
+}
+
+.chat-message:last-child {
+    border-bottom: none;
+}
+
+.chat-message:hover {
+    background-color: #F5F7FA;
+}
+
+.chat-message .message-header {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.chat-message .agent-name {
+    font-weight: bold;
+    color: #409EFF;
+    margin-right: 8px;
+}
+
+.chat-message .message-to {
+    color: #909399;
+    font-size: 12px;
+}
+
+.chat-message .message-content {
+    color: #606266;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* 不同角色的消息样式 */
+.chat-message.user_proxy {
+    background-color: #F2F6FC;
+}
+
+.chat-message.assistant {
+    background-color: #F0F9EB;
+}
+
+.chat-message.sql_expert {
+    background-color: #FDF6EC;
+}
+
+.chat-message.data_analyst {
+    background-color: #FEF0F0;
+}
+
+/* 时间线自定义样式 */
+.el-timeline-item__content {
+    color: #606266;
+}
+
+.el-timeline-item__timestamp {
+    color: #909399;
+    font-size: 13px;
+}
+
+/* 页脚样式 */
+.el-footer {
+    background-color: #545c64;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
+}
+
+/* 标签页样式 */
+.demo-tabs {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .el-main {
+        padding: 10px;
+    }
+    
+    .el-form {
+        padding: 10px;
+    }
+    
+    .query-result {
+        padding: 10px;
+    }
+    
+    .execution-log {
+        padding: 10px;
+    }
+    
+    .chat-message {
+        padding: 10px;
+    }
+} 

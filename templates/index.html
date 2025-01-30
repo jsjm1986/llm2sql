@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% raw %}
+<div class="database-interface">
+    <el-tabs v-model="activeTab" class="demo-tabs">
+        <!-- 查询面板 -->
+        <el-tab-pane label="查询数据" name="query">
+            <el-form>
+                <el-form-item label="查询需求">
+                    <el-input
+                        v-model="queryInput"
+                        type="textarea"
+                        :rows="3"
+                        placeholder="例如：查找年龄大于25岁的用户">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="handleQuery" :loading="loading.query">执行查询</el-button>
+                </el-form-item>
+            </el-form>
+            
+            <!-- 执行流程日志 -->
+            <div v-if="logs.query.length > 0" class="execution-log">
+                <h3>执行流程：</h3>
+                <el-timeline>
+                    <el-timeline-item
+                        v-for="(log, index) in logs.query"
+                        :key="index"
+                        :type="log.type"
+                        :color="log.color"
+                        :timestamp="log.time">
+                        {{ log.message }}
+                        <div v-if="log.sql" class="sql-code">
+                            <pre><code>{{ log.sql }}</code></pre>
+                        </div>
+                        <!-- Agents对话内容 -->
+                        <div v-if="log.chat_messages" class="chat-messages">
+                            <div v-for="(msg, msgIndex) in log.chat_messages" 
+                                :key="msgIndex" 
+                                class="chat-message"
+                                :class="msg.role">
+                                <div class="message-header">
+                                    <span class="agent-name">{{ msg.role }}</span>
+                                    <span class="message-to" v-if="msg.to">to {{ msg.to }}</span>
+                                </div>
+                                <div class="message-content" v-html="formatMessage(msg.content)"></div>
+                            </div>
+                        </div>
+                    </el-timeline-item>
+                </el-timeline>
+            </div>
+            
+            <!-- 查询结果表格 -->
+            <div v-if="showQueryResult" class="query-result">
+                <h3>查询结果：</h3>
+                <el-empty v-if="queryResult.length === 0" description="未找到匹配的数据"></el-empty>
+                <el-table v-else :data="queryResult" border style="width: 100%">
+                    <el-table-column
+                        v-for="col in tableColumns"
+                        :key="col"
+                        :prop="col"
+                        :label="col">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-tab-pane>
+
+        <!-- 更新面板 -->
+        <el-tab-pane label="更新数据" name="update">
+            <el-form>
+                <el-form-item label="更新需求">
+                    <el-input
+                        v-model="updateInput"
+                        type="textarea"
+                        :rows="3"
+                        placeholder="例如：将用户1的年龄更新为30岁">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="warning" @click="handleUpdate" :loading="loading.update">执行更新</el-button>
+                </el-form-item>
+            </el-form>
+
+            <!-- 执行流程日志 -->
+            <div v-if="logs.update.length > 0" class="execution-log">
+                <h3>执行流程：</h3>
+                <el-timeline>
+                    <el-timeline-item
+                        v-for="(log, index) in logs.update"
+                        :key="index"
+                        :type="log.type"
+                        :color="log.color"
+                        :timestamp="log.time">
+                        {{ log.message }}
+                        <div v-if="log.sql" class="sql-code">
+                            <pre><code>{{ log.sql }}</code></pre>
+                        </div>
+                        <!-- Agents对话内容 -->
+                        <div v-if="log.chat_messages" class="chat-messages">
+                            <div v-for="(msg, msgIndex) in log.chat_messages" 
+                                :key="msgIndex" 
+                                class="chat-message"
+                                :class="msg.role">
+                                <div class="message-header">
+                                    <span class="agent-name">{{ msg.role }}</span>
+                                    <span class="message-to" v-if="msg.to">to {{ msg.to }}</span>
+                                </div>
+                                <div class="message-content" v-html="formatMessage(msg.content)"></div>
+                            </div>
+                        </div>
+                    </el-timeline-item>
+                </el-timeline>
+            </div>
+        </el-tab-pane>
+
+        <!-- 删除面板 -->
+        <el-tab-pane label="删除数据" name="delete">
+            <el-form>
+                <el-form-item label="删除需求">
+                    <el-input
+                        v-model="deleteInput"
+                        type="textarea"
+                        :rows="3"
+                        placeholder="例如：删除年龄小于20岁的用户">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="danger" @click="handleDelete" :loading="loading.delete">执行删除</el-button>
+                </el-form-item>
+            </el-form>
+
+            <!-- 执行流程日志 -->
+            <div v-if="logs.delete.length > 0" class="execution-log">
+                <h3>执行流程：</h3>
+                <el-timeline>
+                    <el-timeline-item
+                        v-for="(log, index) in logs.delete"
+                        :key="index"
+                        :type="log.type"
+                        :color="log.color"
+                        :timestamp="log.time">
+                        {{ log.message }}
+                        <div v-if="log.sql" class="sql-code">
+                            <pre><code>{{ log.sql }}</code></pre>
+                        </div>
+                        <!-- Agents对话内容 -->
+                        <div v-if="log.chat_messages" class="chat-messages">
+                            <div v-for="(msg, msgIndex) in log.chat_messages" 
+                                :key="msgIndex" 
+                                class="chat-message"
+                                :class="msg.role">
+                                <div class="message-header">
+                                    <span class="agent-name">{{ msg.role }}</span>
+                                    <span class="message-to" v-if="msg.to">to {{ msg.to }}</span>
+                                </div>
+                                <div class="message-content" v-html="formatMessage(msg.content)"></div>
+                            </div>
+                        </div>
+                    </el-timeline-item>
+                </el-timeline>
+            </div>
+        </el-tab-pane>
+
+        <!-- 备份管理面板 -->
+        <el-tab-pane label="备份管理" name="backup">
+            <el-button type="success" @click="refreshBackups" :loading="loading.backup">刷新备份列表</el-button>
+            <el-table :data="backups" style="width: 100%; margin-top: 20px;">
+                <el-table-column prop="filename" label="备份文件"></el-table-column>
+                <el-table-column label="操作" width="200">
+                    <template #default="scope">
+                        <el-button
+                            size="small"
+                            type="primary"
+                            @click="handleRestore(scope.row.filename)"
+                            :loading="loading.restore">
+                            恢复
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <!-- 执行流程日志 -->
+            <div v-if="logs.backup.length > 0" class="execution-log">
+                <h3>执行流程：</h3>
+                <el-timeline>
+                    <el-timeline-item
+                        v-for="(log, index) in logs.backup"
+                        :key="index"
+                        :type="log.type"
+                        :color="log.color"
+                        :timestamp="log.time">
+                        {{ log.message }}
+                    </el-timeline-item>
+                </el-timeline>
+            </div>
+        </el-tab-pane>
+    </el-tabs>
+</div>
+{% endraw %}
+{% endblock %} 
